@@ -1,1 +1,1 @@
-# ALU-Simulator
+# MIPS-Simulator
