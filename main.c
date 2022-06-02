@@ -3,7 +3,7 @@
 #include <string.h>
 #include "defines.h"
 
-#define MAX 3 // ÃÖ´ë ÀÔ·Â ÀÎÀÚ 3°³±îÁö ex) sr <register number> <value>
+#define MAX 3 // ìµœëŒ€ ì…ë ¥ ì¸ì 3ê°œê¹Œì§€ ex) sr <register number> <value>
 #define M_SIZE 1024
 
 unsigned int parseInt(char* str);
@@ -20,14 +20,15 @@ int main(void) {
         switch (commands[0][0]) 
         {
         case 'h':
-            printf("Load program : l <½ÇÇà ÆÄÀÏÀÌ¸§>\n");
-            printf("Jump program : j <ÇÁ·Î±×·¥ ½ÃÀÛ À§Ä¡>\n");
+            printf("Load program : l <ì‹¤í–‰ íŒŒì¼ì´ë¦„>\n");
+            printf("Jump program : j <í”„ë¡œê·¸ë¨ ì‹œì‘ ìœ„ì¹˜>\n");
             printf("Go program : g\n");
             printf("Step : s\n");
             printf("View memory : m <start> <end>\n");
             printf("Program exit : x\n");
-            printf("Æ¯Á¤ ·¹Áö½ºÅÍ °ª ¼³Á¤ : sr <register number> <value>\n");
-            printf("¸Ş¸ğ¸® Æ¯Á¤ ÁÖ¼ÒÀÇ °ª ¼³Á¤ : sm <location> <value>\n");
+            printf("íŠ¹ì • ë ˆì§€ìŠ¤í„° ê°’ ì„¤ì • : sr <register number> <value>\n");
+            printf("ë©”ëª¨ë¦¬ íŠ¹ì • ì£¼ì†Œì˜ ê°’ ì„¤ì • : sm <location> <value>\n");
+            printf("í˜„ì¬ PCê°’ í™•ì¸ : pc\n");
             printf("\n");
             break;
             
@@ -67,14 +68,23 @@ int main(void) {
         case 'r': 
             viewRegister();
             break;
+                
+        case 'p':
+            switch (commands[0][1]) {
+            case 'c':
+                printf("í˜„ì¬ PC ê°’ì€ : [%x] ì…ë‹ˆë‹¤.\n", PC);
+                break;
+            }
+            break;
+                
         case 'x':
-            printf("ÇÁ·Î±×·¥ÀÌ Á¾·áµÇ¾ú½À´Ï´Ù.\n");
+            printf("í”„ë¡œê·¸ë¨ì´ ì¢…ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.\n");
             exit(1);
 
         default:
-            printf("Àß¸øµÈ ¸í·É¾î ÀÔ´Ï´Ù. µµ¿òÀ» ¿øÇÏ½Ã¸é h¸¦ ÀÔ·ÂÇÏ¼¼¿ä...\n");
+            printf("ì˜ëª»ëœ ëª…ë ¹ì–´ ì…ë‹ˆë‹¤. ë„ì›€ì„ ì›í•˜ì‹œë©´ hë¥¼ ì…ë ¥í•˜ì„¸ìš”...\n");
         }
-        for (int i = 0; i < argc; i++) free(commands[i]); // µ¿ÀûÇÒ´çÇÑ°Å ÇØÁ¦ÇØÁÖ±â
+        for (int i = 0; i < argc; i++) free(commands[i]); // ë™ì í• ë‹¹í•œê±° í•´ì œí•´ì£¼ê¸°
     }
 
     return 0;
@@ -83,7 +93,7 @@ int main(void) {
 
 int readCommands(char** commands) {
 
-    printf("¸í·É¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä: ");
+    printf("ëª…ë ¹ì–´ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”: ");
     char commandBuffer[100];
     fgets(commandBuffer, 100, stdin);
 
@@ -165,5 +175,5 @@ void loadProgram(const char* filename) {
         MEM(0x10000000 + 4 * i, word, WRITE, WORD);
     }
 
-    printf("¼º°øÀûÀ¸·Î ·ÎµåµÇ¾ú½À´Ï´Ù.\n\n");
+    printf("ì„±ê³µì ìœ¼ë¡œ ë¡œë“œë˜ì—ˆìŠµë‹ˆë‹¤.\n\n");
 }
