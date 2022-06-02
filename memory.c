@@ -13,11 +13,11 @@ int MEM(unsigned int A, int V, int nRW, int S) {
     if (memSelect == 0x004) pM = progMEM;   
     else if (memSelect == 0x100) pM = dataMEM; 
     else if (memSelect == 0x7FF) pM = stackMEM;  
-    else { printf("[ERROR] Àß¸øµÈ ¸Ş¸ğ¸® Á¢±Ù\n"); return -1; }
+    else { printf("[ERROR] Ã€ÃŸÂ¸Ã¸ÂµÃˆ Â¸ÃÂ¸Ã°Â¸Â® ÃÂ¢Â±Ã™\n"); return -1; }
 
     int size = 0;
     if (S == BYTE) size = 1;
-    else if (S == HALF_WORD) size = 2;
+    else if (S == HALF) size = 2;
     else if (S == WORD) size = 4;
 
     if (nRW == 0) { 
@@ -28,7 +28,7 @@ int MEM(unsigned int A, int V, int nRW, int S) {
 
         return word;
     }
-    else if (nRW == WRITE) { 
+    else if (nRW == WR) { 
         for (int i = 0; i < size; i++)
             pM[offset + (size - i - 1)] = ((unsigned char*)&V)[i];
     }
@@ -41,7 +41,7 @@ void viewMemory(unsigned int start, unsigned int end) {
     printf("|  address |   value   |\n");
     printf("|----------------------|\n");
     for (int address = start; address <= end; address += 4) {
-        int word = MEM(address, 0, READ, WORD);
+        int word = MEM(address, 0, RD, WORD);
         printf("| %8x | %9x |\n", address, word);
     }
     printf("------------------------\n");
@@ -58,5 +58,5 @@ void resetMemory(void)
 }
 
 void setMemory(unsigned int address, int value) {
-    MEM(address, value, WRITE, WORD);
+    MEM(address, value, WR, WORD);
 }
