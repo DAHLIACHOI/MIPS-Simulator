@@ -154,33 +154,33 @@ int lui(int rt, int imm) {
 }
 
 int lb(int rt, int imm, int rs) {
-    R[rt] = MEM(R[rs] + imm, 0, READ, BYTE);
+    R[rt] = MEM(R[rs] + imm, 0, RD, BYTE);
     return 0;
 }
 
 int lw(int rt, int imm, int rs) {
-    R[rt] = MEM(R[rs] + imm, 0, READ, WORD);
+    R[rt] = MEM(R[rs] + imm, 0, RD, WORD);
     return 0;
 }
 
 int lbu(int rt, int imm, int rs) {
-    R[rt] = MEM(R[rs] + imm, 0, READ, BYTE);
+    R[rt] = MEM(R[rs] + imm, 0, RD, BYTE);
     return 0;
 }
 
 int sb(int rt, int imm, int rs) {
-    MEM(R[rs] + imm, R[rt], WRITE, BYTE);
+    MEM(R[rs] + imm, R[rt], WR, BYTE);
     return 0;
 }
 
 int sw(int rt, int imm, int rs) {
-    MEM(imm + R[rs], R[rt], WRITE, WORD);
+    MEM(imm + R[rs], R[rt], WR, WORD);
     return 0;
 }
 
 
 union instructionRegister instructionFetch() {
-    unsigned int word = MEM(PC, 0, READ, WORD);
+    unsigned int word = MEM(PC, 0, RD, WORD);
     union instructionRegister instruction = { word };
     PC += 4;
 
@@ -221,7 +221,7 @@ int stepProgram() {
         case XOR:     return xor (rd, rs, rt);
         case NOR:     return nor(rd, rs, rt);
         case SLT:     return slt(rd, rs, rt);
-        default:      printf("Àß¸øµÈ ¸í·É¾î ÀÔ´Ï´Ù. \n");
+        default:      printf("ì˜ëª»ëœ ëª…ë ¹ì–´ ì…ë‹ˆë‹¤. \n");
         }
     }
     else {
@@ -242,7 +242,7 @@ int stepProgram() {
         case LB:   return lb(rt, imm, rs);
         case SB:   return sb(rt, imm, rs);
         case LBU:  return lbu(rt, imm, rs);
-        default:   printf("Àß¸øµÈ ¸í·É¾î ÀÔ´Ï´Ù.\n");
+        default:   printf("ì˜ëª»ëœ ëª…ë ¹ì–´ ì…ë‹ˆë‹¤.\n");
         }
     }
 
