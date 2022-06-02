@@ -11,8 +11,8 @@ int LO = 0;
 
 
 unsigned int REG(unsigned int A, unsigned int V, unsigned int nRW) {
-    if (nRW == READ) return REGISTERS[A];
-    else if (nRW == WRITE) REGISTERS[A] = V;
+    if (nRW == RD) return REGISTERS[A];
+    else if (nRW == WR) REGISTERS[A] = V;
     return 0;
 }
 
@@ -27,7 +27,7 @@ void viewRegister() {
     printf("|          |           |\n");
     for (int i = 0; i < REGISTER_SIZE; i++) {
         char* name = REGISTER_STR[i];
-        unsigned int value = REG(i, 0, READ);
+        unsigned int value = REG(i, 0, RD);
         printf("| %8s | %9x |\n", name, value);
     }
     printf("------------------------\n");
@@ -35,7 +35,7 @@ void viewRegister() {
 
 void resetRegister() {
     for (int i = 0; i < REGISTER_SIZE; i++) {
-        REG(i, 0, WRITE);
+        REG(i, 0, WR);
     }
 
     HI = 0;
@@ -44,7 +44,7 @@ void resetRegister() {
 }
 
 void setRegister(unsigned int number, int value) {
-    REG(number, value, WRITE);
+    REG(number, value, WR);
 }
 
 
