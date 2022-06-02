@@ -92,10 +92,9 @@ static char* FUNCT[6][8] =
 };
 
 
-enum SIZE { BYTE, HALF_WORD, WORD };
+enum acessSize { BYTE, HALF, WORD };
 
-enum READ_WRITE { READ, WRITE };
-
+enum accessType { RD, WR };
 
 enum REGISTER_ENUM {
     $zero, $at, $v0, $v1, $a0, $a1, $a2, $a3, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $g7, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t8, $t9, $k0, $k1, $gp, $sp, $fp, $ra
