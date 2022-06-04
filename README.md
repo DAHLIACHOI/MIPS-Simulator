@@ -10,6 +10,8 @@
 
 - 잘못된 커맨드 입력
 ![잘못된 명령어 쳤을 때.jpg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ad82d84d-e487-4ff2-814c-6d12c9a098d4/잘못된_명령어_쳤을_때.jpg)
+![잘못된 명령어 쳤을 때](https://user-images.githubusercontent.com/48826098/171997926-2f89ac61-e093-4afe-8b1c-b117649838e9.jpg)
+
 
 
 - ‘h’입력 
