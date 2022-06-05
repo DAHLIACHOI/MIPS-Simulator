@@ -79,7 +79,7 @@ int main(void) {
                 
         case 'x':
             printf("프로그램이 종료되었습니다.\n");
-            exit(1);
+            exit(0);
 
         default:
             printf("잘못된 명령어 입니다. 도움을 원하시면 h를 입력하세요...\n");
