@@ -15,6 +15,7 @@
 
 
 - ‘h’입력 
+- 
 ![2  help](https://user-images.githubusercontent.com/48826098/172036922-767c0b92-051d-4ef4-a7f9-87b24e4c2580.jpg)
 
 
