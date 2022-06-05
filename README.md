@@ -15,13 +15,12 @@
 
 
 - ‘h’입력 
-
-![잘못된 명령어 쳤을 때](https://user-images.githubusercontent.com/48826098/171997963-03baa0ee-7b1b-4441-9396-61aed8fbfc99.jpg)
+![2  help](https://user-images.githubusercontent.com/48826098/172036922-767c0b92-051d-4ef4-a7f9-87b24e4c2580.jpg)
 
 
 - ‘l’ 입력 (load program)
 
-![잘못된 명령어 쳤을 때](https://user-images.githubusercontent.com/48826098/171997983-c756c8fa-42ae-4b24-9a35-d53ab4c51474.jpg)
+![3  l](https://user-images.githubusercontent.com/48826098/172036926-6f991072-f294-448e-9a24-c01b7c24f909.jpg)
 
 
 
