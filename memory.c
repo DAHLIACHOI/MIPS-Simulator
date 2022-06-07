@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "defines.h"
-
+#define MEMORY_SIZE 0x100000
 
 unsigned char progMEM[MEMORY_SIZE], dataMEM[MEMORY_SIZE], stackMEM[MEMORY_SIZE];
 
@@ -13,7 +13,7 @@ int MEM(unsigned int A, int V, int nRW, int S) {
     if (memSelect == 0x004) pM = progMEM;   
     else if (memSelect == 0x100) pM = dataMEM; 
     else if (memSelect == 0x7FF) pM = stackMEM;  
-    else { return -1; }
+    else {return -1; }
 
     int size = 0;
     if (S == BYTE) size = 1;
