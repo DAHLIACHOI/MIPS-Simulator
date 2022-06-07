@@ -9,33 +9,35 @@ void instructionToString(unsigned int word, char** str) {
 
     unsigned int opcode = instruction.R.opc;
     unsigned int funct = instruction.R.fct;
+
     unsigned int opc1 = opcode >> 3;
     unsigned int opc2 = (opcode << 29) >> 29;
+
     unsigned int funct1 = (funct << 26) >> 29;
     unsigned int funct2 = (funct << 29) >> 29;
 
     char* op = opcode ? OPCODE[opc1][opc2] : FUNCT[funct1][funct2];
-    char* rs = REGISTER_STR[instruction.R.rs];
-    char* rt = REGISTER_STR[instruction.R.rt];
-    char* rd = REGISTER_STR[instruction.R.rd];
+    char* rs = REGISTER_NAME[instruction.R.rs];
+    char* rt = REGISTER_NAME[instruction.R.rt];
+    char* rd = REGISTER_NAME[instruction.R.rd];
     unsigned int sh = instruction.R.sht;
     unsigned int target = instruction.J.jval;
     unsigned int u_immediate = instruction.I.offset;
     int immediate = (int)instruction.I.offset; 
 
 
-    if (opcode == R_FORMAT) {
+    if (opcode == 0) {
         switch (funct) {
-        case SLL: case SRL: case SRA:
+        case 0: case 2: case 3:
             sprintf(*str, "%s %s, %s, %d", op, rd, rt, sh);
             break;
-        case JR:
+        case 8:
             sprintf(*str, "%s %s", op, rs);
             break;
-        case SYSCALL:
+        case 12:
             sprintf(*str, "syscall");
             break;
-        case MFHI: case MFLO:
+        case 16: case 18:
             sprintf(*str, "%s %s", op, rd);
             break;
         default:
@@ -44,29 +46,29 @@ void instructionToString(unsigned int word, char** str) {
     }
     else {
         switch (opcode) {
-        case J: case JAL:
+        case 2: case 3:
             sprintf( *str, "%s %x", op, target);
             break;
-        case BLTZ:
+        case 1:
             sprintf(*str, "%s %s, %d", op, rs, immediate);
             break;
-        case BEQ: case BNE:
+        case 4: case 5:
             sprintf(*str, "%s %s, %s, %d", op, rs, rt, immediate);
             break;
-        case ADDI: case ADDIU: case SLTI: case SLTIU:
+        case 8: case 10:
             sprintf(*str, "%s %s, %s, %d", op, rt, rs, immediate);
             break;
-        case ANDI: case ORI: case XORI:
+        case 12: case 13: case 14:
             sprintf(*str, "%s %s, %s, %d", op, rt, rs, u_immediate);
             break;
-        case LUI:
+        case 15:
             sprintf(*str, "%s %s, %d", op, rt, u_immediate);
             break;
-        case LW: case SW: case LB: case SB: case LBU:
+        case 35 :case 43: case 32: case 40: case 36:
             sprintf(*str, "%s %s, %d(%s)", op, rt, immediate, rs);
             break;
         default:
-            sprintf(*str, "¿ﬂ∏¯µ» ∏Ì∑…æÓ¿‘¥œ¥Ÿ.: %x", instruction.i);
+            sprintf(*str, "ÏûòÎ™ªÎêú Î™ÖÎ†πÏñ¥ÏûÖÎãàÎã§.: %x", instruction.i);
         }
     }
 }
