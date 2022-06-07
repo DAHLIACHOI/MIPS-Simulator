@@ -26,7 +26,7 @@ void viewRegister() {
     printf("| %8s | %9x |\n", "LO", LO);
     printf("|          |           |\n");
     for (int i = 0; i < REGISTER_SIZE; i++) {
-        char* name = REGISTER_STR[i];
+        char* name = REGISTER_NAME[i];
         unsigned int value = REG(i, 0, RD);
         printf("| %8s | %9x |\n", name, value);
     }
@@ -40,7 +40,7 @@ void resetRegister() {
 
     HI = 0;
     LO = 0;
-    REG($sp, 0x80000000, WRITE);
+    REG(29, 0x80000000, WR);
 }
 
 void setRegister(unsigned int number, int value) {
