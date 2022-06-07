@@ -7,18 +7,28 @@
 #define M_SIZE 1024
 
 int readChar(FILE* fp, unsigned char* c);
-int readCommands(char** commands);
 void loadProgram(const char* filename);
 extern int PC;
 
 int main(void) {
-    while (1) {
-        char* commands[MAX] = { "", "", "" };
-        int argc = readCommands(commands);
 
-        switch (commands[0][0]) 
-        {
-        case 'h':
+    while (1) {
+        char commands[3][100];
+        char str[100];
+
+        printf("커맨드를 입력해주세요: ");
+        gets(str);
+
+        char* ptr = strtok(str, " ");
+        int i = 0;
+
+        while (ptr != NULL) {
+            strcpy(commands[i++], ptr);
+            ptr = strtok(NULL, " ");
+        }
+
+        if (strcmp(commands[0], "h") == 0) {
+
             printf("Load program : l <실행 파일이름>\n");
             printf("Jump program : j <프로그램 시작 위치>\n");
             printf("Go program : g\n");
@@ -29,84 +39,64 @@ int main(void) {
             printf("메모리 특정 주소의 값 설정 : sm <location> <value>\n");
             printf("현재 PC값 확인 : pc\n");
             printf("\n");
-            break;
-            
-        case 'l': 
+
+        }
+
+        if (strcmp(commands[0], "l") == 0) {
             char* filename = commands[1];
             loadProgram(filename);
-            break;
-        case 'j':
+        }
+
+        else if (strcmp(commands[0], "j") == 0) {
             unsigned int address = (unsigned int)strtoul(commands[1], NULL, 0);
             jumpProgram(address);
-            break;
-        case 'g':
+        }
+
+        else if (strcmp(commands[0], "g") == 0) {
             goProgram();
-            break;
-        case 's':
-            switch (commands[0][1]) {
-            case 0: 
-                stepProgram();
-                break;
-            case 'm':
-                unsigned int address = (unsigned int)strtoul(commands[1], NULL, 0);
-                int memory_value = (unsigned int)strtoul(commands[2], NULL, 0);
-                setMemory(address, memory_value);
-                break;
-            case 'r': 
-                unsigned int number = (unsigned int)strtoul(commands[1], NULL, 0);
-                int register_value = (unsigned int)strtoul(commands[2], NULL, 0);
-                setRegister(number, register_value);
-                break;
-            }
-            break;
-        case 'm': 
+        }
+
+        else if (strcmp(commands[0], "s") == 0) {
+            stepProgram();
+        }
+
+        else if (strcmp(commands[0], "sm") == 0) {
+            unsigned int address = (unsigned int)strtoul(commands[1], NULL, 0);
+            int memory_value = (unsigned int)strtoul(commands[2], NULL, 0);
+            setMemory(address, memory_value);
+        }
+
+        else if (strcmp(commands[0], "sr") == 0) {
+            unsigned int number = (unsigned int)strtoul(commands[1], NULL, 0);
+            int register_value = (unsigned int)strtoul(commands[2], NULL, 0);
+            setRegister(number, register_value);
+        }
+
+        else if (strcmp(commands[0], "m") == 0) {
             unsigned int start = (unsigned int)strtoul(commands[1], NULL, 0);
             unsigned int end = (unsigned int)strtoul(commands[2], NULL, 0);
             viewMemory(start, end);
-            break;
-        case 'r': 
+        }
+
+        else if (strcmp(commands[0], "r") == 0) {
             viewRegister();
-            break;
+        }
 
-        case 'p':
-            switch (commands[0][1]) {
-            case 'c':
-                printf("현재 PC 값은 : [%x] 입니다.\n\n", PC);
-                break;
-            }
-            break;
+        else if (strcmp(commands[0], "pc") == 0) {
+            printf("현재 PC 값은 : [%x] 입니다.\n\n", PC);
+        }
 
-        case 'x':
+        else if (strcmp(commands[0], "x") == 0) {
             printf("프로그램이 종료되었습니다.\n");
             exit(0);
+        }
 
-        default:
+        else {
             printf("잘못된 명령어 입니다. 도움을 원하시면 h를 입력하세요...\n\n");
         }
-        for (int i = 0; i < argc; i++) free(commands[i]); // 동적할당한거 해제해주기
     }
 
     return 0;
-}
-
-
-int readCommands(char** commands) {
-
-    printf("명령어를 입력해주세요: ");
-    char commandBuffer[100];
-    fgets(commandBuffer, 100, stdin);
-
-    strtok(commandBuffer, "\n");
-    char* token = strtok(commandBuffer, " ");
-    int argc = 0; 
-    while (token != NULL && argc < MAX) { 
-        commands[argc] = (char*)malloc((strlen(token) + 1) * sizeof(char)); 
-        strcpy(commands[argc], token); 
-        argc++; 
-        token = strtok(NULL, " "); 
-    }
-
-    return argc;
 }
 
 int readChar(FILE* fp, unsigned char* c) {
