@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 
-// Arithmetic unit
 int addSubtract(int X, int Y, int C) {
 	if (C < 0 || C > 1) {
 		printf("error in addSubtract()...\n");
@@ -14,7 +13,6 @@ int addSubtract(int X, int Y, int C) {
 		return X - Y;
 }
 
-// Logic unit
 int logicOperation(int X, int Y, int C)
 {
 	if (C < 0 || C > 3) {
@@ -23,17 +21,15 @@ int logicOperation(int X, int Y, int C)
 	}
 
 	if (C == 0)
-		return X & Y;	// bitwise-AND
+		return X & Y;	
 	else if (C == 1)
-		return X | Y;   // bitwise-OR
+		return X | Y;   
 	else if (C == 2)
-		return X ^ Y;   // bitwise-XOR
+		return X ^ Y;  
 	else
-		return ~(X | Y); // bitwise-NOR
+		return ~(X | Y); 
 }
 
-// Shift unit
-// V: 5 bit shift amount
 int shiftOperation(int V, int Y, int C)
 {
 	int ret;
@@ -43,10 +39,10 @@ int shiftOperation(int V, int Y, int C)
 		return 0;
 	}
 
-	if (C == 0) {	// No shift
+	if (C == 0) {	
 		ret = Y;
 	}
-	else if (C == 1) {	// Logical left
+	else if (C == 1) {
 		ret = Y << V;
 	}
 	else if (C == 2) {	// Logical right
@@ -65,16 +61,11 @@ int checkSetLess(int X, int Y)
 	else return 0;
 }
 
-int isZero(int S) {
-    return S == 0;
-}
-
 int checkZero(int S, int* Z) {
-    if (Z != NULL) *Z = isZero(S);
+    if (Z != NULL) *Z = (S == 0);
     return S;
 }
 
-// ALU
 
 int ALU(int X, int Y, int C, int* Z) {
 	int c32, c10,c0;
@@ -84,17 +75,17 @@ int ALU(int X, int Y, int C, int* Z) {
 	c10 = C & 3;		
 	c0 = C & 1;
 
-	if (c32 == 0) { // shift
+	if (c32 == 0) { 
 
 		return shiftOperation(X, Y, c10);
 	}
-	else if (c32 == 1) {  // set less
+	else if (c32 == 1) {
 		return checkSetLess(X, Y);
 	}
-	else if (c32 == 2) {  // addsubtract
+	else if (c32 == 2) { 
 		return checkZero(addSubtract(X, Y, c0), Z);
 	}
-	else {  // logic
+	else {  
 		return logicOperation(X, Y, c10);
 	}
 }
