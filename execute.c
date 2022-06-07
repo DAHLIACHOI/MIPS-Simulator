@@ -35,7 +35,6 @@ int syscall() {
     switch (R[$v0]) {
     case 1:  printf("%d\n", R[$a0]); break;
     case 10: printf("\n"); return 1;
-    case 11: printf("%c\n", R[$a0]); break;
     }
     return 0;
 }
