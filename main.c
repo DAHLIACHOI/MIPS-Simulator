@@ -6,7 +6,6 @@
 #define MAX 3 // 최대 입력 인자 3개까지 ex) sr <register number> <value>
 #define M_SIZE 1024
 
-unsigned int parseInt(char* str);
 int readChar(FILE* fp, unsigned char* c);
 int readCommands(char** commands);
 void loadProgram(const char* filename);
@@ -37,7 +36,7 @@ int main(void) {
             loadProgram(filename);
             break;
         case 'j':
-            unsigned int address = parseInt(commands[1]);
+            unsigned int address = (unsigned int)strtoul(commands[1], NULL, 0);
             jumpProgram(address);
             break;
         case 'g':
@@ -49,40 +48,40 @@ int main(void) {
                 stepProgram();
                 break;
             case 'm':
-                unsigned int address = parseInt(commands[1]);
-                int memory_value = parseInt(commands[2]);
+                unsigned int address = (unsigned int)strtoul(commands[1], NULL, 0);
+                int memory_value = (unsigned int)strtoul(commands[2], NULL, 0);
                 setMemory(address, memory_value);
                 break;
             case 'r': 
-                unsigned int number = parseInt(commands[1]);
-                int register_value = parseInt(commands[2]);
+                unsigned int number = (unsigned int)strtoul(commands[1], NULL, 0);
+                int register_value = (unsigned int)strtoul(commands[2], NULL, 0);
                 setRegister(number, register_value);
                 break;
             }
             break;
         case 'm': 
-            unsigned int start = parseInt(commands[1]);
-            unsigned int end = parseInt(commands[2]);
+            unsigned int start = (unsigned int)strtoul(commands[1], NULL, 0);
+            unsigned int end = (unsigned int)strtoul(commands[2], NULL, 0);
             viewMemory(start, end);
             break;
         case 'r': 
             viewRegister();
             break;
-                
+
         case 'p':
             switch (commands[0][1]) {
             case 'c':
-                printf("현재 PC 값은 : [%x] 입니다.\n", PC);
+                printf("현재 PC 값은 : [%x] 입니다.\n\n", PC);
                 break;
             }
             break;
-                
+
         case 'x':
             printf("프로그램이 종료되었습니다.\n");
             exit(0);
 
         default:
-            printf("잘못된 명령어 입니다. 도움을 원하시면 h를 입력하세요...\n");
+            printf("잘못된 명령어 입니다. 도움을 원하시면 h를 입력하세요...\n\n");
         }
         for (int i = 0; i < argc; i++) free(commands[i]); // 동적할당한거 해제해주기
     }
@@ -108,10 +107,6 @@ int readCommands(char** commands) {
     }
 
     return argc;
-}
-
-unsigned int parseInt(char* str) {
-    return (unsigned int)strtoul(str, NULL, 0);
 }
 
 int readChar(FILE* fp, unsigned char* c) {
@@ -166,13 +161,13 @@ void loadProgram(const char* filename) {
     for (int i = 0; i < iCount; i++) {
         int offset = i + 2;
         unsigned int word = invertEndian(((unsigned int*)BUFFER)[offset]);
-        MEM(0x400000 + 4 * i, word, WRITE, WORD);
+        MEM(0x400000 + 4 * i, word, WR, WORD);
     }
 
     for (int i = 0; i < dCount; i++) {
         int offset = i + 2 + iCount; 
         unsigned int word = invertEndian(((unsigned int*)BUFFER)[offset]);
-        MEM(0x10000000 + 4 * i, word, WRITE, WORD);
+        MEM(0x10000000 + 4 * i, word, WR, WORD);
     }
 
     printf("성공적으로 로드되었습니다.\n\n");
