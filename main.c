@@ -1,15 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "defines.h"
-
-#define MAX 3 // 최대 입력 인자 3개까지 ex) sr <register number> <value>
-#define M_SIZE 1024
-
-int readChar(FILE* fp, unsigned char* c);
-void loadProgram(const char* filename);
-extern int PC;
-
 int main(void) {
 
     while (1) {
@@ -62,14 +50,14 @@ int main(void) {
 
         else if (strcmp(commands[0], "sm") == 0) {
             unsigned int address = (unsigned int)strtoul(commands[1], NULL, 0);
-            int memory_value = (unsigned int)strtoul(commands[2], NULL, 0);
-            setMemory(address, memory_value);
+            int value = (unsigned int)strtoul(commands[2], NULL, 0);
+            setMemory(address, value);
         }
 
         else if (strcmp(commands[0], "sr") == 0) {
             unsigned int number = (unsigned int)strtoul(commands[1], NULL, 0);
-            int register_value = (unsigned int)strtoul(commands[2], NULL, 0);
-            setRegister(number, register_value);
+            int value = (unsigned int)strtoul(commands[2], NULL, 0);
+            setRegister(number, value);
         }
 
         else if (strcmp(commands[0], "m") == 0) {
@@ -97,68 +85,4 @@ int main(void) {
     }
 
     return 0;
-}
-
-int readChar(FILE* fp, unsigned char* c) {
-    if (fread(c, 1, 1, fp) != 1) return 1;
-    else return 0;
-}
-
-unsigned int invertEndian(unsigned int data)
-{
-    unsigned char c[4];
-
-    c[3] = (unsigned char)data; data = data >> 8;
-    c[2] = (unsigned char)data; data = data >> 8;
-    c[1] = (unsigned char)data; data = data >> 8;
-    c[0] = (unsigned char)data;
-
-    return *(unsigned int*)c;
-}
-
-void loadProgram(const char* filename) {
-    FILE* pFile = NULL;
-    errno_t err;
-    unsigned int data;
-    unsigned int addr;
-    unsigned int iCount;
-    unsigned int dCount;
-
-    err = fopen_s(&pFile, filename, "rb");
-    if (err) {
-        printf("파일을 열람할 수 없습니다 : %s\n", filename);
-        return 1;
-    }
-
-    unsigned char BUFFER[M_SIZE];
-
-    for (int i = 0; i < M_SIZE; i++) {
-        int err = readChar(pFile, &BUFFER[i]);
-        if (err) break;
-    }
-
-    fclose(pFile); 
-
-    iCount = invertEndian(((unsigned int*)BUFFER)[0]);
-    dCount = invertEndian(((unsigned int*)BUFFER)[1]);
-
-    printf("Number of Instructions: %d, Number of Data: %d\n", iCount, dCount);
-
-    PC = 0x400000;
-    resetMemory();
-    resetRegister();
-
-    for (int i = 0; i < iCount; i++) {
-        int offset = i + 2;
-        unsigned int word = invertEndian(((unsigned int*)BUFFER)[offset]);
-        MEM(0x400000 + 4 * i, word, WR, WORD);
-    }
-
-    for (int i = 0; i < dCount; i++) {
-        int offset = i + 2 + iCount; 
-        unsigned int word = invertEndian(((unsigned int*)BUFFER)[offset]);
-        MEM(0x10000000 + 4 * i, word, WR, WORD);
-    }
-
-    printf("성공적으로 로드되었습니다.\n\n");
 }
