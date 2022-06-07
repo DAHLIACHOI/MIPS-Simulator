@@ -141,7 +141,7 @@ void loadProgram(const char* filename) {
 
     err = fopen_s(&pFile, filename, "rb");
     if (err) {
-        printf("Cannot open file: %s\n", filename);
+        printf("파일을 열람할 수 없습니다 : %s\n", filename);
         return 1;
     }
 
