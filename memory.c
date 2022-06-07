@@ -13,7 +13,7 @@ int MEM(unsigned int A, int V, int nRW, int S) {
     if (memSelect == 0x004) pM = progMEM;   
     else if (memSelect == 0x100) pM = dataMEM; 
     else if (memSelect == 0x7FF) pM = stackMEM;  
-    else { printf("[ERROR] Àß¸øµÈ ¸Þ¸ð¸® Á¢±Ù\n"); return -1; }
+    else { return -1; }
 
     int size = 0;
     if (S == BYTE) size = 1;
